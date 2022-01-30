@@ -58,17 +58,17 @@ int rejouer()
 
 	if(choix == 'n')
 	{
-		printf("Au revoir !\n\n");
+		printf("\nAu revoir !\n\n");
 		return 0;
 	}
 	else if(choix == 'y')
 	{
-		printf("Et c'est reparti !\n\n");
+		printf("\nEt c'est reparti !\n\n");
 		return 1;
 	}
 	else
 	{
-		printf("Choix invalide\n");
+		printf("\nChoix invalide\n");
 		printf("Au revoir !\n\n");
 		return 0;
 	}
@@ -120,12 +120,12 @@ void jeu()
 	motJoueur = malloc(sizeof(char) * TAILLE_MAX);
 	motVerif = malloc(sizeof(char) * TAILLE_MAX);
 
-	printf("|||||||||||||||||||||||||||||||||\n");
-	printf("|||     Jeu du pendu tmtc     |||\n");
-	printf("|||||||||||||||||||||||||||||||||\n\n\n");
-
 	do
 	{
+		printf("|||||||||||||||||||||||||||||||||\n");
+		printf("|||     Jeu du pendu tmtc     |||\n");
+		printf("|||||||||||||||||||||||||||||||||\n\n\n");
+
 		motMystere = getMotMystere();
 		nbrLettre = strlen(motMystere);
 		while(i <= nbrLettre - 1)
@@ -139,21 +139,25 @@ void jeu()
 		}
 		i = 0;
 
+		printf("\nle mot mystere contient %d lettres\n", nbrLettre);
+
 		do
 		{
 			memcpy(motVerif, motJoueur,sizeof(char) * nbrLettre);
 
 			printf("\n %s \n\n", motJoueur);
-			printf("choisis ta lettre bo male (en maj) :");
+			printf("choisis ta lettre bo male :");
 
 			carJoueur = getchar();
 			while(getchar() != '\n') ;
 		
 			while(i < nbrLettre - 1)
 			{
-				if(carJoueur == motMystere[i])
+				if(carJoueur == motMystere[i] || carJoueur == motMystere[i] + 32)
+				{
 					motJoueur[i] = motMystere[i];
-
+					printPendu(nbrErreur);
+				}
 				i++;
 			}
 			i = 0;
@@ -163,6 +167,7 @@ void jeu()
 				if(i == nbrLettre)
 				{
 					nbrErreur--;
+					printPendu(nbrErreur);
 					printf("\n////Il vous reste %d erreur(s)////\n", nbrErreur);
 				}
 				i++;
@@ -170,7 +175,7 @@ void jeu()
 			i = 0;
 
 		}while(verMot(motMystere, motJoueur, nbrLettre) == 1 && verErreur(nbrErreur, motMystere) == 1);
-
+		nbrErreur = 11;
 	}while(rejouer());
 }
 
